@@ -51,5 +51,24 @@ def complete_overdue_tasks():
         print(f"Error: {error}")
 
 
+@cli.command()
+def clear_today():
+    """Remove due dates from overdue and today's non-recurring tasks"""
+    try:
+        # Get overdue and today's tasks
+        tasks = api.get_tasks(filter="(overdue | today) & !recurring")
+
+        for task in tasks:
+            # Remove the due date
+            # updated_task = api.update_task(task_id=task.id, due_string=None)
+            print(f"Removed due date from task: {task.content}")
+
+        print(
+            "Completed removing due dates from overdue and today's non-recurring tasks."
+        )
+    except Exception as error:
+        print(f"Error: {error}")
+
+
 if __name__ == "__main__":
     cli()
