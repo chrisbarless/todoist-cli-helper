@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import click
 from todoist_api_python.api import TodoistAPI
@@ -56,15 +57,16 @@ def clear_today():
     """Remove due dates from overdue and today's non-recurring tasks"""
     try:
         # Get overdue and today's tasks
-        tasks = api.get_tasks(filter="(overdue | today) & !recurring")
+        tasks = api.get_tasks(filter="overdue & !recurring")
 
         for task in tasks:
             # Remove the due date
-            # updated_task = api.update_task(task_id=task.id, due_string=None)
+            api.update_task(task_id=task.id, due_string="no due date")
             print(f"Removed due date from task: {task.content}")
 
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(
-            "Completed removing due dates from overdue and today's non-recurring tasks."
+            f"Completed removing due dates from overdue and today's non-recurring tasks at {current_time}."
         )
     except Exception as error:
         print(f"Error: {error}")
