@@ -14,7 +14,7 @@ A command-line interface for automating Todoist tasks.
 1. Clone the repository
 2. Install dependencies:
 
-```
+```bash
 
 pip install -e .
 
@@ -22,7 +22,7 @@ pip install -e .
 
 3. Set your Todoist API token as an environment variable:
 
-```
+```bash
 
 export TODOIST_API_TOKEN=your_api_token_here
 
@@ -32,7 +32,7 @@ export TODOIST_API_TOKEN=your_api_token_here
 
 Run the CLI with:
 
-```
+```bash
 
 python -m todoist_cli.cli [COMMAND]
 
@@ -47,7 +47,7 @@ Available commands:
 
 For more information on each command, use:
 
-```
+```bash
 
 python -m todoist_cli.cli [COMMAND] --help
 
