@@ -8,7 +8,12 @@ from todoist_api_python.api import TodoistAPI
 
 # Initialize the Todoist API client
 api = TodoistAPI(os.environ.get("TODOIST_API_TOKEN"))
-inbox_id = os.environ.get("TODOIST_INBOX_ID")
+
+
+def get_inbox_id():
+    projects = api.get_projects()
+    inbox = next((project for project in projects if project.is_inbox_project), None)
+    return inbox.id
 
 
 @click.group()
@@ -48,7 +53,7 @@ def open_inbox_links():
     """Open links in the inbox and clear their tasks"""
 
     try:
-        tasks = api.get_tasks(project_id=inbox_id)
+        tasks = api.get_tasks(project_id=get_inbox_id())
         for task in tasks:
             url_match = re.search(
                 r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
