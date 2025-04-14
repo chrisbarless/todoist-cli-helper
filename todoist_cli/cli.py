@@ -50,7 +50,6 @@ def open_inbox_links():
     try:
         tasks = api.get_tasks(project_id=inbox_id)
         for task in tasks:
-            # Check if the task content contains a URL
             url_match = re.search(
                 r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
                 task.content,
@@ -60,7 +59,6 @@ def open_inbox_links():
                 print(f"Opening URL: {url}")
                 subprocess.run(["open", url], check=True)
 
-                # Delete the task
                 api.delete_task(task_id=task.id)
                 print(f"Deleted task: {task.content}")
             else:
@@ -85,7 +83,6 @@ def complete_overdue_tasks():
 def clear_today():
     """Remove due dates from overdue and today's non-recurring tasks"""
     try:
-        # Get overdue and today's tasks
         tasks = api.get_tasks(filter="overdue & !recurring")
 
         for task in tasks:
