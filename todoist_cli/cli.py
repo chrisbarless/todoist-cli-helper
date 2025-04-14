@@ -1,4 +1,6 @@
 import os
+import re
+import subprocess
 from datetime import datetime
 
 import click
@@ -6,6 +8,7 @@ from todoist_api_python.api import TodoistAPI
 
 # Initialize the Todoist API client
 api = TodoistAPI(os.environ.get("TODOIST_API_TOKEN"))
+inbox_id = os.environ.get("TODOIST_INBOX_ID")
 
 
 @click.group()
@@ -36,6 +39,32 @@ def add_task(content, project_id, due_date):
     try:
         task = api.add_task(content=content, project_id=project_id, due_date=due_date)
         print(f"Task added: {task.content}")
+    except Exception as error:
+        print(f"Error: {error}")
+
+
+@cli.command()
+def open_inbox_links():
+    """Open links in the inbox and clear their tasks"""
+
+    try:
+        tasks = api.get_tasks(project_id=inbox_id)
+        for task in tasks:
+            # Check if the task content contains a URL
+            url_match = re.search(
+                r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
+                task.content,
+            )
+            if url_match:
+                url = url_match.group(0)
+                print(f"Opening URL: {url}")
+                subprocess.run(["open", url], check=True)
+
+                # Delete the task
+                api.delete_task(task_id=task.id)
+                print(f"Deleted task: {task.content}")
+            else:
+                print(f"No URL found in task: {task.content}")
     except Exception as error:
         print(f"Error: {error}")
 

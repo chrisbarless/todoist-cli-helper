@@ -1,19 +1,10 @@
-[tool.poetry]
+[project]
 name = "todoist-cli"
 version = "0.1.0"
-description = "A CLI for automating Todoist workflows"
-authors = ["Chris Barless <chris@barless.co>"]
+description = "Add your description here"
 readme = "README.md"
-packages = [{include = "todoist_cli"}]
-
-[tool.poetry.dependencies]
-python = "^3.12"
-click = "^8.1.7"
-todoist-api-python = "^2.1.7"
-
-[tool.poetry.scripts]
-todoist-cli = "todoist_cli.cli:cli"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires-python = ">=3.13"
+dependencies = [
+    "click>=8.1.8",
+    "todoist-api-python>=2.1.7",
+]
